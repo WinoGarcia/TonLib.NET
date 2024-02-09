@@ -37,8 +37,18 @@ namespace TonLibDotNet.Samples.Recipes
             logger.LogInformation("GetCollectionData() for NFT Collection {Address}:", collectionAddress);
             logger.LogInformation("  Collection nextItemIndex: {Value}", cd.nextItemIndex);
             logger.LogInformation("  Collection owner:         {Value}", cd.ownerAddress);
-logger.LogInformation("Collectioncontent:\r\n{Value}",cd.collection_content.DumpCells());
+            logger.LogInformation("Collectioncontent:\r\n{Value}",cd.collection_content.DumpCells());
 
+            var cc = await TonRecipes.TokenData.LoadNftCollectionContent(cd.collection_content);
+            if (cc is not null)
+            {
+                logger.LogInformation("Parsed collection data by TEP-64 standard:");
+                logger.LogInformation("  Name?:          {Value}", cc.Name);
+                logger.LogInformation("  Description?:   {Value}", cc.Description);
+                logger.LogInformation("  Image?:         {Value}", cc.Image);
+                logger.LogInformation("  SocialLinks?:   {Value}", string.Join(", ", cc.SocialLinks));
+                logger.LogInformation("  Marketplace?:   {Value}", cc.Marketplace);
+            }
 
             var nd = await TonRecipes.NFTs.GetNftData(tonClient, nftAddress);
             logger.LogInformation("GetNftData() for NFT Item {Address}:", nftAddress);
@@ -55,6 +65,17 @@ logger.LogInformation("Collectioncontent:\r\n{Value}",cd.collection_content.Dump
 
             var ic = await TonRecipes.NFTs.GetNftContent(tonClient, collectionAddress, nd.index, nd.individualContent);
             logger.LogInformation("GetNftContent() result:\r\n{Value}", ic.DumpCells());
+            
+            var nc = await TonRecipes.TokenData.LoadNftItemContent(ic, nd.individualContent);
+            if (nc is not null)
+            {
+                logger.LogInformation("Parsed Nft content by TEP-64 standard");
+                logger.LogInformation("  Name?:          {Value}", nc.Name);
+                logger.LogInformation("  Description?:   {Value}", nc.Description);
+                logger.LogInformation("  Image?:         {Value}", nc.Image);
+                logger.LogInformation("  ContentUrl?:    {Value}", nc.ContentUrl);
+                logger.LogInformation("  Attributes?:    {Value}", string.Join(", ", nc.Attributes.Select(a => $"{a.TraitType}: {a.Value}")));
+            }
 
             if (inMainnet)
             {

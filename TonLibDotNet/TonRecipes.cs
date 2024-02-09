@@ -48,5 +48,13 @@ namespace TonLibDotNet
         ///   and <see href="https://github.com/ton-blockchain/token-contract/tree/main/nft/">Reference NFT implementation</see>.
         /// </remarks>
         public static Tep62Nft NFTs { get; } = Tep62Nft.Instance;
+
+        /// <summary>
+        /// Functions to work with Jettons and Nft metadata.
+        /// </summary>
+        /// <remarks>
+        /// Based on <see href="https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md">TEP 64: A standard interface for tokens (meta)data</see>
+        /// </remarks>
+        public static Tep64TokenData TokenData { get; } = Tep64TokenData.Instance;
     }
 }

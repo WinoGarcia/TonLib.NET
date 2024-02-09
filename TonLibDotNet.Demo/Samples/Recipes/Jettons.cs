@@ -55,6 +55,18 @@ namespace TonLibDotNet.Samples.Recipes
             ////logger.LogInformation("  Content:     \r\n{Value}", jd.jettonContent.DumpCells());
             ////logger.LogInformation("  Wallet code: \r\n{Value}", jd.jettonWalletCode.DumpCells());
 
+            var jc = await TonRecipes.TokenData.LoadJettonContent(jd.jettonContent);
+            if (jc is not null)
+            {
+                logger.LogInformation("Parsed jetton content by TEP-64 standard");
+                logger.LogInformation("  Name?:        {Value}", jc.Name);
+                logger.LogInformation("  Description?: {Value}", jc.Description);
+                logger.LogInformation("  Symbol?:      {Value}", jc.Symbol);
+                logger.LogInformation("  Decimals?:    {Value}", jc.Decimals);
+                logger.LogInformation("  ImageData?:   {Value}", jc.ImageData);
+                logger.LogInformation("  Image?:       {Value}", jc.Image);
+            }
+
             if (inMainnet)
             {
                 logger.LogWarning("Jettons transfer sample in Mainnet is disabled for safety reasons. Switch to testnet in Program.cs and try again.");
